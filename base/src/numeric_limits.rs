@@ -1,56 +1,38 @@
 
-pub trait Min {
+pub trait MinLimit {
     fn min() -> Self;
 }
 
-pub trait Max {
+pub trait MaxLimit {
     fn max() -> Self;
 }
 
-impl Min for f32 {
-    fn min() -> f32 { std::f32::MIN }
+macro_rules! min_limit_impl  {
+    ($type:ident) => {
+        impl MinLimit for $type {
+            fn min() -> $type { std::$type::MIN }
+        }
+    };
 }
 
-impl Max for f32 {
-    fn max() -> f32 { std::f32::MAX }
+macro_rules! max_limit_impl  {
+    ($type:ident) => {
+        impl MaxLimit for $type {
+            fn max() -> $type { std::$type::MAX }
+        }
+    };
 }
 
-impl Min for f64 {
-    fn min() -> f64 { std::f64::MIN }
+macro_rules! numeric_limit_impl  {
+    ($type:ident) => {
+        min_limit_impl !($type);
+        max_limit_impl !($type);
+    };
 }
 
-impl Max for f64 {
-    fn max() -> f64 { std::f64::MAX }
-}
-
-impl Min for u32 {
-    fn min() -> u32 { std::u32::MIN }
-}
-
-impl Max for u32 {
-    fn max() -> u32 { std::u32::MAX }
-}
-
-impl Min for u64 {
-    fn min() -> u64 { std::u64::MIN }
-}
-
-impl Max for u64 {
-    fn max() -> u64 { std::u64::MAX }
-}
-
-impl Min for i32 {
-    fn min() -> i32 { std::i32::MIN }
-}
-
-impl Max for i32 {
-    fn max() -> i32 { std::i32::MAX }
-}
-
-impl Min for i64 {
-    fn min() -> i64 { std::i64::MIN }
-}
-
-impl Max for i64 {
-    fn max() -> i64 { std::i64::MAX }
-}
+numeric_limit_impl!(f32);
+numeric_limit_impl!(f64);
+numeric_limit_impl!(u32);
+numeric_limit_impl!(u64);
+numeric_limit_impl!(i32);
+numeric_limit_impl!(i64);
